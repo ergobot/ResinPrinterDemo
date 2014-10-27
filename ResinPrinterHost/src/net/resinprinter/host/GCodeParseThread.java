@@ -1,5 +1,6 @@
 package net.resinprinter.host;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -55,10 +58,16 @@ public class GCodeParseThread  implements Runnable {
                            	  	String imageNumber = String.format("%0"+padLength(sliceCount) + "d",incoming);
                            	  	System.out.println("Formatted: " + imageNumber);
 //                           	  	System.out.println("Show picture: " + baseName + imageNumber+ ".png");
+                           	 File imageLocation = new File(gCode.getParentFile(),FilenameUtils.removeExtension(gCode.getName()) + imageNumber+ ".png");
+                           	 System.out.println("ImageLocation: " + imageLocation.getAbsolutePath());
+                           	 System.out.println("Exists: " + imageLocation.exists());
+                           	 
+                           	 BufferedImage bimage = ImageIO.read(imageLocation);
                            	 System.out.println("Show picture: " + FilenameUtils.removeExtension(gCode.getName()) + imageNumber+ ".png");
-                           	  	
+                           	 DisplayManager.Instance().Show(bimage);
                            	  	// close bufferedimage
-                           	  	
+//                           	 bimage.
+                           	 
                              }
                              continue;
                       }

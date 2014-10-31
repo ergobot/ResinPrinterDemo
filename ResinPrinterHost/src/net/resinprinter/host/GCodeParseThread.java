@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FilenameUtils;
 
-import net.resinprinter.host.JobManager.Status;
+import net.resinprinter.host.JobManager.MachineAction;
 
 public class GCodeParseThread  implements Runnable {
 
@@ -25,7 +25,7 @@ public class GCodeParseThread  implements Runnable {
 	@Override
 	public void run() {
 		System.out.println(Thread.currentThread().getName() + " Start");
-		JobManager.Status = Status.RUNNING;
+		JobManager.Status = MachineAction.RUNNING;
 		parse();
 		System.out.println(Thread.currentThread().getName() + " End.");
 	}
@@ -33,14 +33,14 @@ public class GCodeParseThread  implements Runnable {
 	private void parse(){
 		System.out.println("Parsing the file");
 		 BufferedReader stream = null;
-         try {
+         try { 
                 stream = new BufferedReader(new FileReader(gCode));
                 String currentLine;
                 Integer sliceCount = null;
                 Pattern slicePattern = Pattern.compile("\\s*;\\s*<\\s*Slice\\s*>\\s*(\\d+|blank)\\s*", Pattern.CASE_INSENSITIVE);
                 Pattern delayPattern = Pattern.compile("\\s*;\\s*<\\s*Delay\\s*>\\s*(\\d+)\\s*", Pattern.CASE_INSENSITIVE);
                 Pattern sliceCountPattern = Pattern.compile("\\s*;\\s*Number\\s*of\\s*Slices\\s*=\\s*(\\d+)\\s*", Pattern.CASE_INSENSITIVE);
-                while ((currentLine = stream.readLine()) != null && JobManager.Status == Status.RUNNING) {
+                while ((currentLine = stream.readLine()) != null && JobManager.Status == MachineAction.RUNNING) {
                	 if(currentLine.startsWith(";")){
                       Matcher matcher = slicePattern.matcher(currentLine);
                       if (matcher.matches()) {
@@ -50,7 +50,10 @@ public class GCodeParseThread  implements Runnable {
                              
                              if (matcher.group(1).toUpperCase().equals("BLANK")) {
                                     //TODO: call method to blank the screen.
+//                            	 DisplayManager.Instance().Show(null);
+//                            	 DisplayManager.Instance().ShowBlank();
                            	  System.out.println("Show Blank");
+                           	  DisplayManager.Instance().ShowBlank();
                              } else {
                                     //TODO: call slice method
                            	  	int incoming = Integer.parseInt(matcher.group(1));
@@ -64,7 +67,9 @@ public class GCodeParseThread  implements Runnable {
                            	 
                            	 BufferedImage bimage = ImageIO.read(imageLocation);
                            	 System.out.println("Show picture: " + FilenameUtils.removeExtension(gCode.getName()) + imageNumber+ ".png");
+                           	 
                            	 DisplayManager.Instance().Show(bimage);
+                           	
                            	  	// close bufferedimage
 //                           	 bimage.
                            	 

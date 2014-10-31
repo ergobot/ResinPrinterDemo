@@ -1,4 +1,4 @@
-package net.resinprinter.host;
+package net.resinprinter.host.obsoleted;
 import java.io.IOException;
 
 import javax.ws.rs.GET;
@@ -6,7 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import net.resinprinter.host.JobManager.Status;
+import net.resinprinter.host.JobManager;
+import net.resinprinter.host.JobManager.MachineAction;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -25,7 +26,7 @@ public class Stop {
     @Produces(MediaType.TEXT_PLAIN)
     public String stop() {
     	
-    	JobManager.Status = Status.STOPPED;
+    	JobManager.Status = MachineAction.STOPPED;
     	return "Status changed to stopped";
         
     }

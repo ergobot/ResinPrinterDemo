@@ -1,4 +1,4 @@
-package net.resinprinter.host;
+package net.resinprinter.host.obsoleted;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,25 +6,29 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import net.resinprinter.host.JobManager.Status;
+import net.resinprinter.host.GCodeParseThread;
+import net.resinprinter.host.HostProperties;
+import net.resinprinter.host.JobManager;
+import net.resinprinter.host.JobManagerException;
+import net.resinprinter.host.JobManager.MachineAction;
 
-public class Demo {
+public class StandAloneDemo {
 
 	public static void main(String[] args) throws IOException,
 			JobManagerException, InterruptedException, ExecutionException {
 
-		if (JobManager.Status != Status.RUNNING) {
+		if (JobManager.Status != MachineAction.RUNNING) {
 			// Read property file
 			Properties properties = HostProperties.getHostProperties();
-
+			// TODO:Broadcast printer ip over udp
+			
 			// Create job
 			File selectedFile = new File(properties.getProperty("sourcedir"),
 					"Replicator_Cathedral.zip");
 			File workingDir = new File(properties.getProperty("printdir"));
 			// Delete and Create handled in jobManager
-			JobManager jobManager = new JobManager(selectedFile, workingDir);
+			JobManager jobManager = new JobManager(selectedFile);
 
 			// Parse File
 			ExecutorService executor = Executors.newSingleThreadExecutor();

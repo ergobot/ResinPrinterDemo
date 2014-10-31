@@ -15,11 +15,11 @@ import org.apache.commons.io.IOUtils;
 
 public class JobManager {
 
-	public enum Status {
+	public enum MachineAction {
 		RUNNING, STOPPED
 	}
 
-	public static Status Status;
+	public static MachineAction Status = MachineAction.STOPPED;
 
 	// Archive file 
 	File job;
@@ -45,11 +45,11 @@ public class JobManager {
 		return gCode;
 	}
 
-	public JobManager(File selectedArchive, File workingDir)
+	public JobManager(File selectedArchive)
 			throws JobManagerException, IOException {
 
 		this.job = selectedArchive;
-		this.workingDir = workingDir;
+		this.workingDir = new File(HostProperties.getWorkingDir());
 
 		if (!getJob().exists()) {
 			throw new JobManagerException("Selected job does not exist");

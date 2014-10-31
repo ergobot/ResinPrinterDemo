@@ -1,4 +1,4 @@
-package net.resinprinter.host;
+package net.resinprinter.host.obsoleted;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
@@ -10,7 +10,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import net.resinprinter.host.JobManager.Status;
+import net.resinprinter.host.GCodeParseThread;
+import net.resinprinter.host.HostProperties;
+import net.resinprinter.host.JobManager;
+import net.resinprinter.host.JobManagerException;
+import net.resinprinter.host.JobManager.MachineAction;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -29,24 +33,15 @@ public class Start {
     @Produces(MediaType.TEXT_PLAIN)
     public String start() {
     	
-    	if (JobManager.Status != Status.RUNNING) {
-			// Read property file
-			Properties properties = null;
-			try {
-				properties = HostProperties.getHostProperties();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return "false:Failed to load property file:" + e.getMessage();
-			}
-
+    	if (JobManager.Status != MachineAction.RUNNING) {
+			
 			// Create job
-			File selectedFile = new File(properties.getProperty("sourcedir"),
-					"Replicator_Cathedral.zip");
-			File workingDir = new File(properties.getProperty("printdir"));
+			File selectedFile = new File(HostProperties.getSourceDir(),"Replicator_Cathedral.zip");
+			
 			// Delete and Create handled in jobManager
 			JobManager jobManager = null;
 			try {
-				jobManager = new JobManager(selectedFile, workingDir);
+				jobManager = new JobManager(selectedFile);
 			} catch (JobManagerException | IOException e) {
 				e.printStackTrace();
 				return "false:Failed to start job:" + e.getMessage();

@@ -41,6 +41,7 @@ public class MachineResource {
      */
     @GET
     @Path("start")
+<<<<<<< HEAD
     @Produces(MediaType.APPLICATION_JSON)
     public MachineResponse start() {
     	

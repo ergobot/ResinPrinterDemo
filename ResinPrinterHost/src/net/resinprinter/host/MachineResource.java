@@ -41,8 +41,8 @@ public class MachineResource {
      */
     @GET
     @Path("start")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String start() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse start() {
     	
     	if (JobManager.Status != MachineAction.RUNNING) {
 			
@@ -55,7 +55,8 @@ public class MachineResource {
 				jobManager = new JobManager(selectedFile);
 			} catch (JobManagerException | IOException e) {
 				e.printStackTrace();
-				return "false:Failed to start job:" + e.getMessage();
+				MachineResponse machineResponse = new MachineResponse("start",false,e.getMessage());
+				return machineResponse;
 			}
 
 			// Parse File
@@ -66,9 +67,10 @@ public class MachineResource {
 			System.out.println("Finished parsing Gcode file");
 			System.out.println("Exiting");
 			
-			
-			return "True:Job Started";
-		} else{return "False:Can't start a new job.  Machine is busy.  Job in progress";}
+			return new MachineResponse("start", true, "");
+		} else{
+			return new MachineResponse("start",false,"Can't start a new job.  Machine is busy.  Job in progress");
+			}
     	
         
     }
@@ -82,12 +84,10 @@ public class MachineResource {
      */
     @GET
     @Path("stop")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String stop() {
-    	
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse stop() {
     	JobManager.Status = MachineAction.STOPPED;
-    	return "Status changed to stopped";
-        
+    	return new MachineResponse("stop", true, "");
     }
     
     /**
@@ -99,9 +99,9 @@ public class MachineResource {
      */
     @GET
     @Path("status")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String status() {
-    	return JobManager.Status.toString();
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse status() {
+    	return new MachineResponse("status", true, JobManager.Status.toString());
     }
     
     

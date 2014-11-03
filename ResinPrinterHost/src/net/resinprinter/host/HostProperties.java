@@ -16,9 +16,13 @@ public class HostProperties {
 		return workingDir;
 	}
 	
+	static boolean fakeSerial = false;
+	public static boolean getFakeSerial(){return fakeSerial;}
+	
 	public static void init() throws IOException{
 		workingDir = HostProperties.getHostProperties().getProperty("printdir");
 		sourceDir = HostProperties.getHostProperties().getProperty("sourcedir");
+		fakeSerial = Boolean.parseBoolean(HostProperties.getHostProperties().getProperty("fakeserial"));
 	}
 	
 	public static Properties getHostProperties() throws IOException{

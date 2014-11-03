@@ -17,9 +17,13 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
  
+
+
+
 
 
 
@@ -103,7 +107,174 @@ public class MachineResource {
     public MachineResponse status() {
     	return new MachineResponse("status", true, JobManager.Status.toString());
     }
+    //Z Axis Up
+    //MachineControl.cmdUp_Click()
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("zaxisup")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse zAxisUp() {
+    	ManualControl.Instance().cmdUp_Click();
+    	return new MachineResponse("zaxisup", true, "");
+    }
     
+    //Z Axis Down
+    //MachineControl.cmdDown_Click()
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("zaxisdown")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse zAxisDown() {
+    	ManualControl.Instance().cmdDown_Click();
+    	return new MachineResponse("zaxisdown", true, "");
+    }
     
-	
+    //X Axis Move (sedgwick open apeture)
+    //MachineControl.cmdMoveX()
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("movex")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse moveX() {
+    	ManualControl.Instance().cmdMoveX();
+    	return new MachineResponse("movex", true, "");
+    }
+    
+    //Y Axis Move (sedgwick close apeture)
+    //MachineControl.cmdMoveY()
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("movey")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse moveY() {
+    	ManualControl.Instance().cmdMoveY();
+    	return new MachineResponse("movey", true, "");
+    }
+    
+    //Z Axis Move(double dist)
+    //MachineControl.cmdMoveZ(double dist)
+    // (.025 small reverse)
+    // (1.0 medium reverse)
+    // (10.0 large reverse)
+    // (-.025 small reverse)
+    // (-1.0 medium reverse)
+    // (-10.0 large reverse)
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("movez/{dist}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse moveZ(@PathParam("dist") String dist) {
+    	ManualControl.Instance().cmdMoveZ(Double.parseDouble(dist));
+    	return new MachineResponse("movez", true, dist);
+    }
+    
+    // Enable Motors
+    //MachineControl.cmdMotorsOn()
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("motorson")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse motorsOn() {
+//    	try{
+    	try {
+			ManualControl.Instance().cmdMotorsOn();
+			return new MachineResponse("motorsOn", true, "");
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new MachineResponse("motorsOn", false, e.getMessage());
+		}
+    	
+//    	}catch(IOException, InterruptedException)
+    }
+    
+    // Disable Motors
+    //MachineControl.cmdMotorsOff()
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("motorsoff")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse motorsOff() {
+    	try {
+			ManualControl.Instance().cmdMotorsOff();
+			return new MachineResponse("motorsoff", true, "");
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new MachineResponse("motorsoff", false, e.getMessage());
+		}
+    }
+    //MachineControl.cmdGetZRate()
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("getzrate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse getZRate() {
+    	double zRate = ManualControl.Instance().getZRate();
+    	return new MachineResponse("getzrate", true, String.valueOf(zRate));
+    }
+    
+    //MachineControl.cmdGetXYRate()
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("getxyrate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse getXYRate() {
+    	double xyRate = ManualControl.Instance().getXYRate();
+    	return new MachineResponse("getxyrate", true, String.valueOf(xyRate));
+    }
 }

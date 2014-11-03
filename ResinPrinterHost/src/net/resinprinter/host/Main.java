@@ -21,6 +21,9 @@ public class Main {
         // create a resource config that scans for JAX-RS resources and providers
         // in com.demo.RestDemo package
         final ResourceConfig rc = new ResourceConfig().packages("net.resinprinter.host");
+        rc.register(FileResource.class);
+        rc.register(MachineResource.class);
+        
         //Stuff for fileuploading
         rc.packages("org.glassfish.jersey.examples.multipart");
         rc.register(MultiPartFeature.class);

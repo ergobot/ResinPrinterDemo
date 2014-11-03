@@ -5,6 +5,7 @@
 	<artifactId>ResinPrinterHost</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cwhost</name>
+	<packaging>jar</packaging>
 
 	<dependencyManagement>
 		<dependencies>
@@ -59,6 +60,23 @@
 			</resource>
 		</resources>
 		<plugins>
+		<!-- Make this jar executable -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+<!-- 				  <excludes> -->
+<!-- 					<exclude>**/log4j.properties</exclude> -->
+<!-- 				  </excludes> -->
+				  <archive>
+				    <manifest>
+					<addClasspath>true</addClasspath>
+					<mainClass>net.resinprinter.host.Main</mainClass>
+					<classpathPrefix>dependency-jars/</classpathPrefix>
+				    </manifest>
+				  </archive>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>

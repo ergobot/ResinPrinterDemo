@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="ResinPrinterHost">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/libs"/>
+        <property name="context-root" value="ResinPrinterHost"/>
+        <property name="java-output-path" value="/ResinPrinterHost/target/classes"/>
+    </wb-module>
+</project-modules>

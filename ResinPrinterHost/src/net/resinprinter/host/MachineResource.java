@@ -43,15 +43,20 @@ public class MachineResource {
      * @return String that will be returned as a text/plain response.
      * @throws IOException 
      */
+//	 @GET
+//	    @Path("movez/{dist}")
+//	    @Produces(MediaType.APPLICATION_JSON)
+//	    public MachineResponse moveZ(@PathParam("dist") String dist) {
+	
     @GET
-    @Path("start")
+    @Path("start/{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public MachineResponse start() {
+    public MachineResponse start(@PathParam("name") String name) {
     	
     	if (JobManager.Status != MachineAction.RUNNING) {
 			
 			// Create job
-			File selectedFile = new File(HostProperties.getSourceDir(),"Replicator_Cathedral.zip");
+			File selectedFile = new File(HostProperties.getSourceDir(),name);
 			
 			// Delete and Create handled in jobManager
 			JobManager jobManager = null;
@@ -67,6 +72,7 @@ public class MachineResource {
 			ExecutorService executor = Executors.newSingleThreadExecutor();
 			Runnable worker = new GCodeParseThread(jobManager.getGCode());
 			executor.execute(worker);
+			DisplayManager.Instance().ShowBlank();
 		
 			System.out.println("Finished parsing Gcode file");
 			System.out.println("Exiting");

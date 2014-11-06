@@ -40,6 +40,7 @@ public class Main {
     @SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException {
     	HostProperties.init();
+    	DisplayManager.Instance().ShowBlank();
     	
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "

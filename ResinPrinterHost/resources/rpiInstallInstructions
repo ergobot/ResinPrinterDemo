@@ -1,0 +1,26 @@
+#Raspberry pi setup instructions:
+
+sudo apt-get install librxtx-java
+sudo apt-get install x11-xserver-utils
+
+#append the following text to: /etc/X11/xinit/xinitrc attempt 1
+echo 'xset s off         # don't activate screensaver' >> /etc/X11/xinit/xinitrc
+echo 'xset -dpms         # disable DPMS (Energy Star) features.' >> /etc/X11/xinit/xinitrc
+echo 'xset s noblank     # don't blank the video device' >> /etc/X11/xinit/xinitrc
+
+# no sleep for autologin-ers attemp 2
+sudo sed -i 's/xserver-command=X/xserver-command=X -s 0 -dpms'/ /etc/lightdm/lightdm.conf
+
+# no sleep method attempt 3
+sudo sed -i 's/POWERDOWN_TIME=30/POWERDOWN_TIME=0'/ /etc/kbd/config
+sudo sed -i 's/BLANK_TIME=30/BLANK_TIME=0'/ /etc/kbd/config
+
+
+#autostart the cwhost
+mkdir ~/.config/autostart
+touch ~/.config/autostart/cwhost.desktop
+echo '[Desktop Entry]' >> ./.config/autostart/cwhost.desktop
+echo 'Type=Application' >> ./.config/autostart/cwhost.desktop
+echo 'Exec=Exec=/home/pi/start.sh' >> ./.config/autostart/cwhost.desktop
+
+

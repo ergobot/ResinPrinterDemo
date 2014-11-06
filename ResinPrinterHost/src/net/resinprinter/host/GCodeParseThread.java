@@ -26,11 +26,16 @@ public class GCodeParseThread  implements Runnable {
 	public void run() {
 		System.out.println(Thread.currentThread().getName() + " Start");
 		JobManager.Status = MachineAction.RUNNING;
-		parse();
+		try {
+			parse();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(Thread.currentThread().getName() + " End.");
 	}
 	
-	private void parse(){
+	private void parse() throws InterruptedException{
 		System.out.println("Parsing the file");
 		 BufferedReader stream = null;
          try { 
@@ -98,6 +103,7 @@ public class GCodeParseThread  implements Runnable {
                	 {
                       //TODO: send gcode to rxtx...
                       System.out.println("Send to gcode: " + currentLine);
+                      SerialManager.Instance().send(currentLine);
                	 }
                 }
          } catch (FileNotFoundException e) {

@@ -49,7 +49,7 @@ public class Start {
 
 			// Parse File
 			ExecutorService executor = Executors.newSingleThreadExecutor();
-			Runnable worker = new GCodeParseThread(jobManager.getGCode());
+			Runnable worker = new GCodeParseThread(jobManager);
 			executor.execute(worker);
 		
 			System.out.println("Finished parsing Gcode file");

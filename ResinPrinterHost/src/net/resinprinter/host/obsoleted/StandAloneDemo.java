@@ -32,7 +32,7 @@ public class StandAloneDemo {
 
 			// Parse File
 			ExecutorService executor = Executors.newSingleThreadExecutor();
-			Runnable worker = new GCodeParseThread(jobManager.getGCode());
+			Runnable worker = new GCodeParseThread(jobManager);
 			executor.execute(worker);
 		
 			// while(!executor.isTerminated()){

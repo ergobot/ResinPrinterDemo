@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -21,6 +22,17 @@ public class JobManager {
 
 	public static MachineAction Status = MachineAction.STOPPED;
 
+	// Total slices
+	private static AtomicInteger totalSlices = new AtomicInteger();
+	public static int getTotalSlices(){return JobManager.totalSlices.get();}
+	public static void setTotalSlices(int totalSlices){JobManager.totalSlices.set(totalSlices);}
+	
+	// Showing current slice
+	private static AtomicInteger currentSlice = new AtomicInteger();
+	public static int getCurrentSlice(){return JobManager.currentSlice.get();}
+	public static void setCurrentSlice(int currentSlice){JobManager.currentSlice.set(currentSlice);}
+	
+	
 	// Archive file 
 	File job;
 	public File getJob() {
@@ -57,7 +69,10 @@ public class JobManager {
 		if (!getJob().isFile()) {
 			throw new JobManagerException("Selected job is not a file");
 		}
-
+		
+		JobManager.setCurrentSlice(0);
+		JobManager.setTotalSlices(0);
+		
 		setupJob();
 	}
 

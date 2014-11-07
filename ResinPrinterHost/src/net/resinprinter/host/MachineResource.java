@@ -43,10 +43,6 @@ public class MachineResource {
      * @return String that will be returned as a text/plain response.
      * @throws IOException 
      */
-//	 @GET
-//	    @Path("movez/{dist}")
-//	    @Produces(MediaType.APPLICATION_JSON)
-//	    public MachineResponse moveZ(@PathParam("dist") String dist) {
 	
     @GET
     @Path("start/{name}")
@@ -70,7 +66,7 @@ public class MachineResource {
 
 			// Parse File
 			ExecutorService executor = Executors.newSingleThreadExecutor();
-			Runnable worker = new GCodeParseThread(jobManager.getGCode());
+			Runnable worker = new GCodeParseThread(jobManager);//jobManager.getGCode());
 			executor.execute(worker);
 			DisplayManager.Instance().ShowBlank();
 			JobManager.Status = MachineAction.STOPPED;
@@ -283,4 +279,37 @@ public class MachineResource {
     	double xyRate = ManualControl.Instance().getXYRate();
     	return new MachineResponse("getxyrate", true, String.valueOf(xyRate));
     }
+    
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("totalslices")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse getTotalSlices() {
+    	return new MachineResponse("totalslices", true, String.valueOf(JobManager.getTotalSlices()));
+    }
+    
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     * @throws IOException 
+     */
+    @GET
+    @Path("currentslice")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MachineResponse getCurrentSlice() {
+    	if(JobManager.Status == MachineAction.RUNNING){
+    		return new MachineResponse("getcurrentslice", true, String.valueOf(JobManager.getCurrentSlice()));
+    	}else{
+    		return new MachineResponse("getcurrentslice", true, "-1");
+    	}
+    }
+    
 }

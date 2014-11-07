@@ -18,8 +18,10 @@ import net.resinprinter.host.JobManager.MachineAction;
 public class GCodeParseThread  implements Runnable {
 
 	File gCode = null;
-	public GCodeParseThread(File gCode){
-		this.gCode = gCode;
+	JobManager jobManager = null;
+	public GCodeParseThread(JobManager jobManager){
+		this.gCode = jobManager.getGCode();
+		this.jobManager = jobManager;
 	}
 	
 	@Override
@@ -63,6 +65,7 @@ public class GCodeParseThread  implements Runnable {
                                     //TODO: call slice method
                            	  	int incoming = Integer.parseInt(matcher.group(1));
                            	  	System.out.println("Show Picture: " +incoming);
+                           	  	jobManager.setCurrentSlice(incoming);
                            	  	String imageNumber = String.format("%0"+padLength(sliceCount) + "d",incoming);
                            	  	System.out.println("Formatted: " + imageNumber);
 //                           	  	System.out.println("Show picture: " + baseName + imageNumber+ ".png");
@@ -94,6 +97,7 @@ public class GCodeParseThread  implements Runnable {
                       matcher = sliceCountPattern.matcher(currentLine);
                       if (matcher.matches()) {
                              sliceCount = Integer.parseInt(matcher.group(1));
+                             jobManager.setTotalSlices(sliceCount);
                              System.out.println(sliceCount);
                              continue;
                       }

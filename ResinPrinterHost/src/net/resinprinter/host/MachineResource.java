@@ -73,7 +73,7 @@ public class MachineResource {
 			Runnable worker = new GCodeParseThread(jobManager.getGCode());
 			executor.execute(worker);
 			DisplayManager.Instance().ShowBlank();
-		
+			JobManager.Status = MachineAction.STOPPED;
 			System.out.println("Finished parsing Gcode file");
 			System.out.println("Exiting");
 			

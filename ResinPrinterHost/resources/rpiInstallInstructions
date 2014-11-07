@@ -9,7 +9,7 @@ echo 'xset -dpms         # disable DPMS (Energy Star) features.' >> /etc/X11/xin
 echo 'xset s noblank     # don't blank the video device' >> /etc/X11/xinit/xinitrc
 
 # no sleep for autologin-ers attemp 2
-sudo sed -i 's/xserver-command=X/xserver-command=X -s 0 -dpms'/ /etc/lightdm/lightdm.conf
+sudo sed -i 's/#xserver-command=X/xserver-command=X -s 0 -dpms'/ /etc/lightdm/lightdm.conf
 
 # no sleep method attempt 3
 sudo sed -i 's/POWERDOWN_TIME=30/POWERDOWN_TIME=0'/ /etc/kbd/config

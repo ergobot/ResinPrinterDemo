@@ -3,6 +3,8 @@ package net.resinprinter.host;
 import java.io.IOException;
 import java.net.URI;
 
+import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
+import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
@@ -27,9 +29,23 @@ public class Main {
         //Stuff for fileuploading
         rc.packages("org.glassfish.jersey.examples.multipart");
         rc.register(MultiPartFeature.class);
+        
+        
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+//        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        
+        HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+//        HttpHandler httpHandler = new CLStaticHttpHandler(HttpServer.class.getClassLoader(), "/static/");
+        HttpHandler httpHandler = new CLStaticHttpHandler(HttpServer.class.getClassLoader(), "/resources/html/");
+        httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/cwhost/");
+        return httpServer;
+        
+        
+//        return GrizzlyHttpServerFactory.createHttpServer()
+        
+//        HttpHandler httpHandler = new CLStaticHttpHandler(HttpServer.class.getClassLoader(), "/static/");
+//        httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/");
     }
 
     /**
@@ -43,6 +59,7 @@ public class Main {
     	DisplayManager.Instance().ShowBlank();
     	
         final HttpServer server = startServer();
+        
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
         System.in.read();

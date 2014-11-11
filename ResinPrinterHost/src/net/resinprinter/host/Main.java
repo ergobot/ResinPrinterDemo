@@ -33,13 +33,12 @@ public class Main {
         
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-//        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
         
-        HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
-//        HttpHandler httpHandler = new CLStaticHttpHandler(HttpServer.class.getClassLoader(), "/static/");
-        HttpHandler httpHandler = new CLStaticHttpHandler(HttpServer.class.getClassLoader(), "/resources/html/");
-        httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/cwhost/");
-        return httpServer;
+//        HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+//        HttpHandler httpHandler = new CLStaticHttpHandler(HttpServer.class.getClassLoader(), "/resources/html/");
+//        httpServer.getServerConfiguration().addHttpHandler(httpHandler, "/cwhost/");
+//        return httpServer;
         
         
 //        return GrizzlyHttpServerFactory.createHttpServer()

@@ -1,7 +1,12 @@
 ResinPrinterDemo
 ================
 
-(Very alpha) - This project is in active development.  
+Initial exploration/write.
+Don't use, for historical purposes.
+Find the rewrite here:
+https://github.com/area515/Creation-Workshop-Host
+
+(Very alpha) - This is an initial write of a host software for creation workshop.  This project is not in active development here.  
 
 This is software for a raspberry pi to drive a resin printer.
 
